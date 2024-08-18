@@ -1,0 +1,17 @@
+.titlebar-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  transition: background-color 0.2s;
+}
+
+.titlebar-button img {
+  filter: invert(80%);
+}
+
+.titlebar-button:hover {
+  background-color: var(--background-color);
+  /* filter: brightness(1.3); */
+}

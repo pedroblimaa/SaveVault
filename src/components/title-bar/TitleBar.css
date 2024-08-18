@@ -1,0 +1,32 @@
+.titlebar {
+  height: 30px;
+  background: var(--background-light-color);
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.titlebar .menu {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.titlebar .menu div {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  transition: 0.2s;
+  cursor: pointer;
+  padding: 3px 10px;
+  border-radius: 5px;
+}
+
+.titlebar .menu div:hover {
+  color: var(--text-light-color);
+  background-color: var(--background-color);
+}

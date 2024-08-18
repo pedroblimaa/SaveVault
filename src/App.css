@@ -1,0 +1,17 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+
+  /* Colors */
+  --primary-color: #208484;
+  --background-color: #2f2f2f;
+  --background-light-color: #3f3f3f;
+  --text-color: #bdbdbd;
+  --text-light-color: #f6f6f6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: var(--text-color);
+    background-color: var(--background-color);
+  }
+}
