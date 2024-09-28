@@ -58,7 +58,8 @@
         "title": "Save Vault",
         "width": 800,
         "height": 600,
-        "decorations": false
+        "decorations": false,
+        "transparent": true
       }
     ],
     "security": {

@@ -4,10 +4,10 @@
   user-select: none;
   display: flex;
   justify-content: space-between;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  border-top-left-radius: var(--app-border-radius);
+  border-top-right-radius: var(--app-border-radius);
+  border: 1px solid var(--page-border-color);
+  border-bottom: none;
 }
 
 .titlebar .menu {
@@ -29,4 +29,32 @@
 .titlebar .menu div:hover {
   color: var(--text-light-color);
   background-color: var(--background-color);
+}
+
+.titlebar .menu div a {
+  text-decoration: none;
+  color: var(--text-color);
+  position: relative;
+}
+
+.titlebar .menu div.active a {
+  color: #fff;
+  transition: 0.2s ease-in-out;
+  
+}
+
+.titlebar .menu div a::after {
+  content: '';
+  position: absolute;
+  width: 0px;
+  height: 1px;
+  left: 0;
+  bottom: -2px;
+  background-color: #fff;
+  transition: width 0.1s;
+}
+
+.titlebar .menu div.active a::after {
+  width: 100%;
+  transition: width 0.3s;
 }

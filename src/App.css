@@ -5,13 +5,41 @@
   --primary-color: #208484;
   --background-color: #2f2f2f;
   --background-light-color: #3f3f3f;
+  --page-border-color: #4f4f4f;
   --text-color: #bdbdbd;
   --text-light-color: #f6f6f6;
+  --app-border-radius: 10px;
+}
+
+#root {
+  border-radius: var(--app-border-radius);
+  height: 100%;
+  border: 1px solid;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  body {
     color: var(--text-color);
-    background-color: var(--background-color);
   }
+
+  #root {
+    background-color: var(--background-color);
+    border-color: var(--page-border-color);
+  }
+}
+
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 99%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-content {
+  padding: 15px;
 }
