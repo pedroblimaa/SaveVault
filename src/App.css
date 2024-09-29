@@ -43,3 +43,26 @@ body {
 .app-content {
   padding: 15px;
 }
+
+button {
+  outline: none;
+  background-color: var(--background-light-color);
+  padding: 2px 4px;
+  border: 1px solid var(--page-border-color)
+}
+
+input {
+  background-color: var(--background-color);
+  border-radius: 10px;
+  height: 40px;
+  color: var(--text-color);
+  outline: none;
+  border: 2px solid var(--page-border-color);
+  padding: 5px 10px;
+  transition: border-color 0.15s;
+  font-size: 14px;
+}
+
+input:focus-visible {
+  border: 2px solid var(--text-color);
+}
