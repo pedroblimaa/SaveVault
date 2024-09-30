@@ -1,9 +1,7 @@
 use rusqlite::Connection;
 
 const DB_PATH: &str = "game_database.db";
-pub const GAME_DATABASE: &str = "game_database";
 pub const CLOUD_FOLDER_DB_TABLE: &str = "cloud_folder";
-pub const FAILED_CREATE_TABLE_MESSAGE: &str = "Failed to create the database or table.";
 pub const FAILED_QUERY_MESSAGE: &str = "Failed to execute query.";
 
 pub type DbResult<T> = Result<T, Box<dyn std::error::Error>>;
