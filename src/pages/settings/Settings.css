@@ -1,7 +1,6 @@
 .setting-container {
   display: flex;
-  align-items: center; 
-  gap: 20px;
+  align-items: center;
 }
 
 .setting-container input {
@@ -22,6 +21,8 @@
   transition: 0.2s;
   display: flex;
   align-items: center;
+  margin-left: 10px;
+  margin-right: 15px;
 }
 
 .setting-container .setting-button:hover {
