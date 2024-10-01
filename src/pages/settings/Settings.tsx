@@ -10,7 +10,7 @@ function Settings() {
   const selectFolder = async () => {
     const selected = await open({ directory: true, multiple: false })
     setFolder(selected as string)
-    invoke('set_cloud_folder', { folder: selected })
+    invoke('set_cloud_folder', { path: selected })
   }
 
   const changeFolderValue = (event: SyntheticEvent<HTMLInputElement>) => {
