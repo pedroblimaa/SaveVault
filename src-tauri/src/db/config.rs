@@ -1,3 +1,5 @@
+use std::sync::{Arc, Mutex};
+
 use rusqlite::Connection;
 
 const CLOUD_FOLDER_DB_PATH: &str = "cloud_folder_database.db";
@@ -6,6 +8,14 @@ pub const FAILED_QUERY_MESSAGE: &str = "Failed to execute query.";
 pub const FOLDER_DB: &str = "save_vault.db";
 
 pub type DbResult<T> = Result<T, Box<dyn std::error::Error>>;
+
+pub struct DbConnection {
+    pub conn: Arc<Mutex<Connection>>,
+}
+
+pub struct CloudFolderDbConnection {
+    pub conn: Arc<Mutex<Connection>>,
+}
 
 pub fn create_cloud_folder_db() -> DbResult<Connection> {
     let conn = Connection::open(CLOUD_FOLDER_DB_PATH)?;

@@ -32,3 +32,20 @@ pub fn set_cloud_folder(connection: MutexGuard<'_, Connection>, folder: &str) {
         .execute(&update_query, [])
         .expect(FAILED_QUERY_MESSAGE);
 }
+
+pub fn select_cloud_folder(connection: MutexGuard<'_, Connection>) -> String {
+    let mut stmt = connection
+        .prepare(&format!("SELECT * FROM  {}", CLOUD_FOLDER_DB_TABLE))
+        .expect(FAILED_QUERY_MESSAGE);
+
+    let result: Option<String> = stmt
+        .query_row([], |row| row.get(1))
+        .optional()
+        .expect(FAILED_QUERY_MESSAGE);
+
+    if let Some(path) = result {
+        path
+    } else {
+        "".to_string()
+    }
+}

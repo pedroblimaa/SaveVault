@@ -1,13 +1,20 @@
 import { invoke } from '@tauri-apps/api'
 import { open } from '@tauri-apps/api/dialog'
-import { SyntheticEvent, useState } from 'react'
+import { SyntheticEvent, useEffect, useState } from 'react'
 import { FaFolder } from 'react-icons/fa'
 import './Settings.css'
 
 function Settings() {
   const [folder, setFolder] = useState('')
 
+  // Use effect to set the folder initalization
+  useEffect(() => {
+    invoke('get_cloud_folder').then((folder) => setFolder(folder as string))
+  }, [])
+
   const selectFolder = async () => {
+    await confirm('You will lose your data with this action, make sure to copy your folder manually later')
+
     const selected = await open({ directory: true, multiple: false })
     setFolder(selected as string)
     invoke('set_cloud_folder', { path: selected })
