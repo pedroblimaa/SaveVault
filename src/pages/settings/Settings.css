@@ -1,0 +1,34 @@
+.setting-container {
+  display: flex;
+  align-items: center;
+}
+
+.setting-container input {
+  flex: 1;
+}
+
+.setting-container .setting-icon {
+  font-size: 25px;
+  color: var(--text-color);
+  transition: 0.2s;
+}
+
+.setting-container .setting-button {
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 15px;
+}
+
+.setting-container .setting-button:hover {
+  background-color: var(--page-border-color);
+
+  .setting-icon {
+    color: var(--text-light-color);
+  }
+}

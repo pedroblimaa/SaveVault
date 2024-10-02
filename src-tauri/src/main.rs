@@ -1,18 +1,25 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod cfg;
+use std::sync::{Arc, Mutex};
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
+use db::config::CloudFolderDbConnection;
+
+mod cmds;
+mod db;
 
 fn main() {
-    cfg::db::create_db();
+    let conn = Arc::new(Mutex::new(db::config::create_cloud_folder_db().unwrap()));
 
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
+    let builder = tauri::Builder::default()
+        .manage(CloudFolderDbConnection { conn })
+        .invoke_handler(tauri::generate_handler![
+            cmds::greet,
+            cmds::set_cloud_folder,
+            cmds::get_cloud_folder
+        ]);
+
+    builder
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
