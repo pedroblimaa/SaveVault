@@ -5,6 +5,7 @@ use std::sync::{Arc, Mutex};
 
 use db::config::CloudFolderDbConnection;
 
+mod folder_manager;
 mod cmds;
 mod db;
 

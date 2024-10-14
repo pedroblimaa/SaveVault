@@ -2,7 +2,7 @@ use std::sync::{Arc, Mutex};
 
 use rusqlite::Connection;
 
-const CLOUD_FOLDER_DB_PATH: &str = "cloud_folder_database.db";
+const CLOUD_FOLDER_DB_PATH: &str = "cloud_folder.db";
 pub const CLOUD_FOLDER_DB_TABLE: &str = "cloud_folder";
 pub const FAILED_QUERY_MESSAGE: &str = "Failed to execute query.";
 pub const FOLDER_DB: &str = "save_vault.db";
@@ -24,7 +24,7 @@ pub fn create_cloud_folder_db() -> DbResult<Connection> {
     Ok(conn)
 }
 
-pub fn create_db(path: &str) -> DbResult<Connection> {
+pub fn create_conn(path: &str) -> DbResult<Connection> {
     let final_path = format!("{}\\{}", path, FOLDER_DB);
     let conn = Connection::open(final_path)?;
     conn.execute(&get_games_table_query(), [])?;

@@ -7,13 +7,15 @@ import './Settings.css'
 function Settings() {
   const [folder, setFolder] = useState('')
 
-  // Use effect to set the folder initalization
   useEffect(() => {
     invoke('get_cloud_folder').then((folder) => setFolder(folder as string))
   }, [])
 
   const selectFolder = async () => {
-    await confirm('You will lose your data with this action, make sure to copy your folder manually later')
+    if (folder?.length) {
+      const userConfirmed = await confirm('Changing the cloud folder will move all existing files to the new location.')
+      if (!userConfirmed) return
+    }
 
     const selected = await open({ directory: true, multiple: false })
     setFolder(selected as string)
