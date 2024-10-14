@@ -1,11 +1,11 @@
 use std::sync::{Arc, Mutex};
-
 use tauri::{AppHandle, Manager, State};
 
 use crate::db::{
     self,
     config::{CloudFolderDbConnection, DbConnection},
 };
+use crate::folder_manager;
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -19,11 +19,15 @@ pub fn set_cloud_folder(
     path: &str,
 ) {
     let cloud_folder_conn = state.conn.lock().expect("Failed to lock connection");
+    let cloud_folder = db::db_manager::select_cloud_folder(&cloud_folder_conn);
+    if !cloud_folder.is_empty() {
+        folder_manager::move_folder_items(&cloud_folder, path);
+    }
 
-    db::db_manager::set_cloud_folder(cloud_folder_conn, path);
+    db::db_manager::set_cloud_folder(&cloud_folder_conn, path);
 
     let conn = Arc::new(Mutex::new(
-        db::config::create_db(path).expect("Failed to create cloud db"),
+        db::config::create_conn(path).expect("Failed to create cloud db"),
     ));
     app_handle.manage(DbConnection { conn });
 }
@@ -32,5 +36,5 @@ pub fn set_cloud_folder(
 pub fn get_cloud_folder(state: State<'_, CloudFolderDbConnection>) -> String {
     let cloud_folder_conn = state.conn.lock().expect("Failed to lock connection");
 
-    db::db_manager::select_cloud_folder(cloud_folder_conn)
+    db::db_manager::select_cloud_folder(&cloud_folder_conn)
 }

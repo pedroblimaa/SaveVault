@@ -6,7 +6,7 @@ use crate::db::config::CLOUD_FOLDER_DB_TABLE;
 
 use super::config::FAILED_QUERY_MESSAGE;
 
-pub fn set_cloud_folder(connection: MutexGuard<'_, Connection>, folder: &str) {
+pub fn set_cloud_folder(connection: &MutexGuard<'_, Connection>, folder: &str) {
     let mut stmt = connection
         .prepare(&format!("SELECT * FROM  {}", CLOUD_FOLDER_DB_TABLE))
         .expect(FAILED_QUERY_MESSAGE);
@@ -33,7 +33,7 @@ pub fn set_cloud_folder(connection: MutexGuard<'_, Connection>, folder: &str) {
         .expect(FAILED_QUERY_MESSAGE);
 }
 
-pub fn select_cloud_folder(connection: MutexGuard<'_, Connection>) -> String {
+pub fn select_cloud_folder(connection: &MutexGuard<'_, Connection>) -> String {
     let mut stmt = connection
         .prepare(&format!("SELECT * FROM  {}", CLOUD_FOLDER_DB_TABLE))
         .expect(FAILED_QUERY_MESSAGE);
