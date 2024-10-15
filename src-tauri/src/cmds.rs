@@ -1,10 +1,10 @@
 use std::sync::{Arc, Mutex};
 use tauri::{AppHandle, Manager, State};
 
-use crate::db::{
+use crate::{db::{
     self,
     config::{CloudFolderDbConnection, DbConnection},
-};
+}, models::game::Game};
 use crate::files_manager;
 
 #[tauri::command]

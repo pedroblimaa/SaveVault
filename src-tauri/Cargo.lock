@@ -2289,6 +2289,7 @@ name = "savevault"
 version = "0.1.0"
 dependencies = [
  "base64 0.22.1",
+ "ico",
  "rusqlite",
  "serde",
  "serde_json",

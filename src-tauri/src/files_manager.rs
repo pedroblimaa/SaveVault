@@ -1,7 +1,7 @@
 use std::ffi::OsStr;
-use std::fs;
+use std::fs::{self, File};
 use std::path::Path;
-use winres::IconResource;
+use ico::IconDir;
 use base64;
 
 use crate::models::game::Game;
@@ -26,9 +26,11 @@ pub fn get_game_info(path: &str) -> Game {
     let file_name = path.file_name().and_then(OsStr::to_str).unwrap_or("");
     let name = file_name.trim_end_matches(".exe").to_string();
 
-    let icon = IconResource::from_path(path)
-        .and_then(|mut icon| icon.largest_icon())
-        .map(|icon| icon.to_png_bytes())
+    let icon = File::open(path)
+        .ok()
+        .and_then(|file| IconDir::read(file).ok())
+        .and_then(|icon_dir| icon_dir.entries().get(0).cloned())
+        .map(|icon_image| icon_image.data().to_vec())
         .unwrap_or_default();
 
     let img64 = format!("data:image/png;base64,{}", base64::encode(&icon));

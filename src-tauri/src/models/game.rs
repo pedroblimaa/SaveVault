@@ -7,14 +7,3 @@ pub struct Game {
     pub img: String,
     pub exe_path: String,
 }
-
-impl Game {
-    pub fn new(id: i64, name: String, img: String, exe_path: String) -> Self {
-        Game {
-            id,
-            name,
-            img,
-            exe_path,
-        }
-    }
-}

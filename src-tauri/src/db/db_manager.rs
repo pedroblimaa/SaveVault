@@ -84,7 +84,7 @@ pub fn add_game(connection: &MutexGuard<'_, Connection>, path: &str) -> Game {
         connection.execute(
             "INSERT INTO games (name, exe_path, img) VALUES (?1, ?2, ?3)",
             &[&game.name, &game.exe_path, &game.img],
-        );
+        ).expect(FAILED_QUERY_MESSAGE);
         game
     }
 }

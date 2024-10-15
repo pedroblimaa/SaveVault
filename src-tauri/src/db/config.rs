@@ -57,8 +57,8 @@ fn get_games_table_query() -> String {
     let save_path = "save_path TEXT";
 
     let query = format!(
-        "CREATE TABLE IF NOT EXISTS games ({}, {}, {}, {}, {})",
-        id, name, exe_path, img, save_path
+        "CREATE TABLE IF NOT EXISTS {} ({}, {}, {}, {}, {})",
+        GAMES_DB_TABLE, id, name, exe_path, img, save_path
     );
 
     query.to_string()

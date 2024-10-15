@@ -18,7 +18,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             cmds::greet,
             cmds::set_cloud_folder,
-            cmds::get_cloud_folder
+            cmds::get_cloud_folder,
+            cmds::add_game
         ]);
 
     builder
