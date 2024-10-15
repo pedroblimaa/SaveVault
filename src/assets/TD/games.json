@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "name": "Super Mario Bros.",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/0/03/Super_Mario_Bros._box.png"
+  },
+  {
+    "id": "2",
+    "name": "The Legend of Zelda",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/4/41/Legend_of_zelda_cover_%28with_cartridge%29_gold.png"
+  },
+  {
+    "id": "3",
+    "name": "Metroid",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/5/5c/Metroid_boxart.jpg"
+  },
+  {
+    "id": "4",
+    "name": "Donkey Kong",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/1/14/Donkey_Kong_flier.jpg"
+  },
+  {
+    "id": "5",
+    "name": "Pac-Man",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/1/16/Pac_flyer.png"
+  },
+  {
+    "id": "6",
+    "name": "Tetris",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/7/7d/Tetris_NES_cover_art.jpg"
+  },
+  {
+    "id": "7",
+    "name": "Sonic the Hedgehog",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/b/ba/Sonic_the_Hedgehog_1_Genesis_box_art.jpg"
+  },
+  {
+    "id": "8",
+    "name": "Final Fantasy",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/d/d8/Final_Fantasy_1987_boxart.jpg"
+  },
+  {
+    "id": "9",
+    "name": "Street Fighter",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/5/55/Street_Fighter_II_Dash_%28flyer%29.png"
+  },
+  {
+    "id": "10",
+    "name": "Mega Man",
+    "imgUrl": "https://upload.wikimedia.org/wikipedia/en/d/dd/Mega_Man_1_box_artwork.jpg"
+  }
+]

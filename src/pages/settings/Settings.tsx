@@ -35,7 +35,6 @@ function Settings() {
           <FaFolder className="setting-icon" />
         </button>
         <input name="Cloud Folder" id="cloud_folder" value={folder} onChange={changeFolderValue} />
-        {/* TODO - Add message to user know it will lose saved data if change folder */}
       </div>
     </>
   )
