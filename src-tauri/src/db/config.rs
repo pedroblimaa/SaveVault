@@ -4,6 +4,7 @@ use rusqlite::Connection;
 
 const CLOUD_FOLDER_DB_PATH: &str = "cloud_folder.db";
 pub const CLOUD_FOLDER_DB_TABLE: &str = "cloud_folder";
+pub const GAMES_DB_TABLE: &str = "games";
 pub const FAILED_QUERY_MESSAGE: &str = "Failed to execute query.";
 pub const FOLDER_DB: &str = "save_vault.db";
 
@@ -50,13 +51,14 @@ fn get_id_query() -> String {
 
 fn get_games_table_query() -> String {
     let id = &get_id_query();
-    let exe_name = "exe_name TEXT UNIQUE";
     let name = "name TEXT";
+    let exe_path = "exe_path TEXT UNIQUE";
+    let img = "img_url TEXT";
     let save_path = "save_path TEXT";
 
     let query = format!(
-        "CREATE TABLE IF NOT EXISTS games ({}, {}, {}, {})",
-        id, exe_name, name, save_path
+        "CREATE TABLE IF NOT EXISTS games ({}, {}, {}, {}, {})",
+        id, name, exe_path, img, save_path
     );
 
     query.to_string()

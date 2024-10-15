@@ -5,9 +5,10 @@ use std::sync::{Arc, Mutex};
 
 use db::config::CloudFolderDbConnection;
 
-mod folder_manager;
+mod files_manager;
 mod cmds;
 mod db;
+mod models;
 
 fn main() {
     let conn = Arc::new(Mutex::new(db::config::create_cloud_folder_db().unwrap()));

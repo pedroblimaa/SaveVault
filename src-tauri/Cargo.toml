@@ -15,6 +15,8 @@ tauri = { version = "1", features = [ "dialog-confirm", "dialog-open", "window-s
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 rusqlite = { version = "0.32.1", features = ["bundled"] }
+winres = "0.1.12"
+base64 = "0.22.1"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

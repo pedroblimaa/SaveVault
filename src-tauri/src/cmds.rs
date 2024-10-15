@@ -5,7 +5,7 @@ use crate::db::{
     self,
     config::{CloudFolderDbConnection, DbConnection},
 };
-use crate::folder_manager;
+use crate::files_manager;
 
 #[tauri::command]
 pub fn greet(name: &str) -> String {
@@ -21,7 +21,7 @@ pub fn set_cloud_folder(
     let cloud_folder_conn = state.conn.lock().expect("Failed to lock connection");
     let cloud_folder = db::db_manager::select_cloud_folder(&cloud_folder_conn);
     if !cloud_folder.is_empty() {
-        folder_manager::move_folder_items(&cloud_folder, path);
+        files_manager::move_folder_items(&cloud_folder, path);
     }
 
     db::db_manager::set_cloud_folder(&cloud_folder_conn, path);
@@ -37,4 +37,10 @@ pub fn get_cloud_folder(state: State<'_, CloudFolderDbConnection>) -> String {
     let cloud_folder_conn = state.conn.lock().expect("Failed to lock connection");
 
     db::db_manager::select_cloud_folder(&cloud_folder_conn)
+}
+
+#[tauri::command]
+pub fn add_game(state: State<'_, DbConnection>, path: &str) -> Game {
+    let conn = state.conn.lock().expect("Failed to lock connection");
+    db::db_manager::add_game(&conn, path)
 }
