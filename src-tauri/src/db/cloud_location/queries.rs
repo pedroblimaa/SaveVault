@@ -1,3 +1,5 @@
+// TODO: Change names for <folder>_queries.rs
+
 pub const CLOUD_LOCATION_DB_TABLE: &str = "cloud_folder_location";
 
 pub fn get_cloud_table() -> String {
