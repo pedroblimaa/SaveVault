@@ -1,23 +1,24 @@
+use base64;
+use ico::IconDir;
 use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::path::Path;
-use ico::IconDir;
-use base64;
 
 use crate::models::game::Game;
 
 pub fn move_folder_items(from_path: &str, to_path: &str) {
-    let entries = fs::read_dir(from_path).expect("Failed to read directory");
+    let entries = fs::read_dir(from_path).unwrap();
 
     for entry in entries {
-        let entry = entry.expect("Failed to read entry");
+        let entry = entry.unwrap();
         let path = entry.path();
         let file_name = path
             .file_name()
-            .expect("Failed to get file name")
+            .unwrap()
             .to_string_lossy();
+
         let new_path = format!("{}/{}", to_path, file_name);
-        fs::rename(path, new_path).expect("Failed to move file");
+        fs::rename(path, new_path).unwrap();
     }
 }
 

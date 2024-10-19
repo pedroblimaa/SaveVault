@@ -1,46 +1,33 @@
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
+
 use tauri::{AppHandle, Manager, State};
 
-use crate::{db::{
-    self,
-    config::{CloudFolderDbConnection, DbConnection},
-}, models::game::Game};
+use crate::db::cloud_location::config::DbPath;
 use crate::files_manager;
+use crate::{db, models::game::Game};
 
 #[tauri::command]
-pub fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
+pub fn set_cloud_location(app_handle: AppHandle, path: &str) {
+    let cloud_location = db::db_manager::select_cloud_location();
 
-#[tauri::command]
-pub fn set_cloud_folder(
-    state: State<'_, CloudFolderDbConnection>,
-    app_handle: AppHandle,
-    path: &str,
-) {
-    let cloud_folder_conn = state.conn.lock().expect("Failed to lock connection");
-    let cloud_folder = db::db_manager::select_cloud_folder(&cloud_folder_conn);
-    if !cloud_folder.is_empty() {
-        files_manager::move_folder_items(&cloud_folder, path);
+    if !cloud_location.is_empty() && cloud_location != path {
+        files_manager::move_folder_items(&cloud_location, path);
     }
 
-    db::db_manager::set_cloud_folder(&cloud_folder_conn, path);
+    db::db_manager::set_cloud_folder(path);
 
-    let conn = Arc::new(Mutex::new(
-        db::config::create_conn(path).expect("Failed to create cloud db"),
-    ));
-    app_handle.manage(DbConnection { conn });
+    let mutex_path = Mutex::new(Some(path.to_string()));
+    app_handle.manage(DbPath { path: mutex_path });
 }
 
 #[tauri::command]
-pub fn get_cloud_folder(state: State<'_, CloudFolderDbConnection>) -> String {
-    let cloud_folder_conn = state.conn.lock().expect("Failed to lock connection");
-
-    db::db_manager::select_cloud_folder(&cloud_folder_conn)
+pub fn get_cloud_location() -> String {
+    db::db_manager::select_cloud_location()
 }
 
 #[tauri::command]
-pub fn add_game(state: State<'_, DbConnection>, path: &str) -> Game {
-    let conn = state.conn.lock().expect("Failed to lock connection");
-    db::db_manager::add_game(&conn, path)
+pub fn add_game(state: State<'_, DbPath>, path: &str) -> Game {
+    // TODO: Handle adding path to manager every time the app is started
+    println!("Adding game: {:?}", path);
+    db::db_manager::add_game(&state.path.lock().unwrap().as_ref().unwrap(), path)
 }

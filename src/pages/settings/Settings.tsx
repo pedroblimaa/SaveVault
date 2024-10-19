@@ -8,7 +8,7 @@ function Settings() {
   const [folder, setFolder] = useState('')
 
   useEffect(() => {
-    invoke('get_cloud_folder').then((folder) => setFolder(folder as string))
+    invoke('get_cloud_location').then((folder) => setFolder(folder as string))
   }, [])
 
   const selectFolder = async () => {
@@ -19,7 +19,7 @@ function Settings() {
 
     const selected = await open({ directory: true, multiple: false })
     setFolder(selected as string)
-    invoke('set_cloud_folder', { path: selected })
+    invoke('set_cloud_location', { path: selected })
   }
 
   const changeFolderValue = (event: SyntheticEvent<HTMLInputElement>) => {
