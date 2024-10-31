@@ -4,25 +4,32 @@ import GameItem from '../../components/game-item/GameItem'
 import { Game } from '../../models/Game'
 import './Home.css'
 import { invoke } from '@tauri-apps/api'
+import { useNavigate } from 'react-router-dom'
 
 function Home() {
+  const navigate = useNavigate()
   const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {
-    // TODO - When app starts check if folder is set, if not, sent to settings with the message
-
-    const fetchGames = async () => {
-      const response = await fetch('src/assets/TD/games.json')
-      const games = await response.json()
-      setGames(games as Game[])
-    }
-    fetchGames()
+    initApp()
   }, [])
 
+  const initApp = async () => {
+    const folder = await invoke('get_cloud_location')
+    folder ? fetchGames() : navigate('/settings')
+  }
+
   const handleAddGame = async () => {
-    const gameExe = await open({ multiple: false, })
+    const gameExe = await open({ multiple: false })
+    // TODO - Fix game being added duplicated when try to add it again
     const addedGame = await invoke('add_game', { path: gameExe })
     setGames([...games, addedGame as Game])
+  }
+
+  const fetchGames = async () => {
+    const response = await fetch('src/assets/TD/games.json')
+    const games = await response.json()
+    setGames(games as Game[])
   }
 
   return (

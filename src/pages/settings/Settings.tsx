@@ -29,6 +29,9 @@ function Settings() {
 
   return (
     <>
+      {folder.length === 0 && (
+        <div className="empty-folder-message">Please, select a cloud folder to start using the app</div>
+      )}
       <div className="setting-container">
         <div className="setting-name">Cloud Folder</div>
         <button className="setting-button" onClick={selectFolder}>
