@@ -1,5 +1,3 @@
-// TODO: Change names for <folder>_queries.rs
-
 use super::config::GAMES_DB_TABLE;
 
 pub fn get_games_table() -> String {

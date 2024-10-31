@@ -58,7 +58,7 @@ pub fn add_game(db_path: &str, path: &str) -> Game {
 
     let game = files_manager::get_game_info(path);
     conn.execute(
-        "INSERT INTO games (name, exe_path, img) VALUES (?1, ?2, ?3)",
+        "INSERT INTO games (name, exe_path, img_url) VALUES (?1, ?2, ?3)",
         &[&game.name, &game.exe_path, &game.img],
     )
     .unwrap();
@@ -72,7 +72,7 @@ pub fn get_game(db_path: &str, game_path: &str) -> Option<Game> {
     let conn = games::config::create_conn(db_path).unwrap();
 
     let mut stmt = conn
-        .prepare(&format!("SELECT * FROM  {} WHERE path = ?", GAMES_DB_TABLE))
+        .prepare(&format!("SELECT * FROM  {} WHERE exe_path = ?", GAMES_DB_TABLE))
         .unwrap();
 
     let result: Result<Game, rusqlite::Error> = stmt.query_row([game_path], |row| {

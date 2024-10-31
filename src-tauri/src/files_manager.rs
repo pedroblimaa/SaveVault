@@ -27,6 +27,7 @@ pub fn get_game_info(path: &str) -> Game {
     let file_name = path.file_name().and_then(OsStr::to_str).unwrap_or("");
     let name = file_name.trim_end_matches(".exe").to_string();
 
+    // TODO - FIX getting icon, currently is coming empty
     let icon = File::open(path)
         .ok()
         .and_then(|file| IconDir::read(file).ok())

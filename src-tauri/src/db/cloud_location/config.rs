@@ -8,7 +8,7 @@ const CLOUD_LOCATION_DB_PATH: &str = "cloud_location.db";
 pub const CLOUD_LOCATION_DB_TABLE: &str = "cloud_folder_location";
 
 pub struct DbPath {
-    pub path: Mutex<Option<String>>,
+    pub path: Mutex<String>,
 }
 
 pub type DbResult<T> = Result<T, Box<dyn std::error::Error>>;

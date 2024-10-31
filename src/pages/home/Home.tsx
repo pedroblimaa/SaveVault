@@ -9,6 +9,8 @@ function Home() {
   const [games, setGames] = useState<Game[]>([])
 
   useEffect(() => {
+    // TODO - When app starts check if folder is set, if not, sent to settings with the message
+
     const fetchGames = async () => {
       const response = await fetch('src/assets/TD/games.json')
       const games = await response.json()
