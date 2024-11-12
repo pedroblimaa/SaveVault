@@ -7,7 +7,6 @@ use db::{cloud_location::config::DbPath, db_manager};
 
 mod cmds;
 mod db;
-mod files_manager;
 mod models;
 mod services;
 
@@ -20,7 +19,9 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             cmds::set_cloud_location,
             cmds::get_cloud_location,
-            cmds::add_game
+            cmds::add_game,
+            cmds::is_cloud_location_empty,
+            cmds::folder_already_used
         ]);
 
     builder.run(tauri::generate_context!()).unwrap();

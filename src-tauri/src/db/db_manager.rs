@@ -1,6 +1,6 @@
-use crate::files_manager;
 
 use crate::models::game::Game;
+use crate::services::files_service;
 
 use super::cloud_location::config::CLOUD_LOCATION_DB_TABLE;
 use super::games::config::GAMES_DB_TABLE;
@@ -56,7 +56,7 @@ pub fn add_game(db_path: &str, path: &str) -> Game {
         };
     }
 
-    let game = files_manager::get_game_info(path);
+    let game = files_service::get_game_info(path);
     conn.execute(
         "INSERT INTO games (name, exe_path, img_url) VALUES (?1, ?2, ?3)",
         &[&game.name, &game.exe_path, &game.img],

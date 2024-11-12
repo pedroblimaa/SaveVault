@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { invoke } from '@tauri-apps/api'
 import { open } from '@tauri-apps/api/dialog'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import GameItem from '../../components/game-item/GameItem'
 import { Game } from '../../models/Game'
 import './Home.css'
-import { invoke } from '@tauri-apps/api'
-import { useNavigate } from 'react-router-dom'
 
 function Home() {
   const navigate = useNavigate()
@@ -21,9 +21,7 @@ function Home() {
 
   const handleAddGame = async () => {
     const gameExe = await open({ multiple: false })
-    // TODO - Fix game being added duplicated when try to add it again
-    const addedGame = await invoke('add_game', { path: gameExe })
-    setGames([...games, addedGame as Game])
+    await invoke('add_game', { path: gameExe })
   }
 
   const fetchGames = async () => {
@@ -34,12 +32,12 @@ function Home() {
 
   return (
     <div className="home">
-      {games.map((game: Game) => (
-        <GameItem key={game.id} name={game.name} imgUrl={game.imgUrl} />
-      ))}
       <div onClick={handleAddGame}>
         <GameItem key={'add'} name={'Add Game'} imgUrl={''} />
       </div>
+      {games.map((game: Game) => (
+        <GameItem key={game.id} name={game.name} imgUrl={game.imgUrl} />
+      ))}
     </div>
   )
 }

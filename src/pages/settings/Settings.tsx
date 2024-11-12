@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api'
-import { open } from '@tauri-apps/api/dialog'
 import { SyntheticEvent, useEffect, useState } from 'react'
 import { FaFolder } from 'react-icons/fa'
+import { SettingsService } from '../../services/settingsService'
 import './Settings.css'
 
 function Settings() {
@@ -12,14 +12,9 @@ function Settings() {
   }, [])
 
   const selectFolder = async () => {
-    if (folder?.length) {
-      const userConfirmed = await confirm('Changing the cloud folder will move all existing files to the new location.')
-      if (!userConfirmed) return
-    }
+    const selectedFolder = await SettingsService.handleSetFolder(folder)
 
-    const selected = await open({ directory: true, multiple: false })
-    setFolder(selected as string)
-    invoke('set_cloud_location', { path: selected })
+    setFolder(selectedFolder)
   }
 
   const changeFolderValue = (event: SyntheticEvent<HTMLInputElement>) => {

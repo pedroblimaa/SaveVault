@@ -1,5 +1,3 @@
-// TODO: Change names for <folder>_config.rs
-
 use rusqlite::Connection;
 
 use super::queries;

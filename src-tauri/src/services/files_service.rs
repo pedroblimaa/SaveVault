@@ -4,6 +4,7 @@ use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::path::Path;
 
+use crate::db::games::config::GAMES_DB;
 use crate::models::game::Game;
 
 pub fn move_folder_items(from_path: &str, to_path: &str) {
@@ -12,10 +13,7 @@ pub fn move_folder_items(from_path: &str, to_path: &str) {
     for entry in entries {
         let entry = entry.unwrap();
         let path = entry.path();
-        let file_name = path
-            .file_name()
-            .unwrap()
-            .to_string_lossy();
+        let file_name = path.file_name().unwrap().to_string_lossy();
 
         let new_path = format!("{}/{}", to_path, file_name);
         fs::rename(path, new_path).unwrap();
@@ -43,4 +41,10 @@ pub fn get_game_info(path: &str) -> Game {
         exe_path: path.to_str().unwrap().to_string(),
         img: img64,
     }
+}
+
+pub fn folder_already_used(path: &str) -> bool {
+    let games_db_path = Path::new(path).join(GAMES_DB);
+
+    games_db_path.exists()
 }
