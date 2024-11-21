@@ -13,7 +13,7 @@ pub fn set_cloud_folder(folder: &str) {
         .prepare(&format!("SELECT * FROM  {}", CLOUD_LOCATION_DB_TABLE))
         .unwrap();
 
-    let result: String = stmt.query_row([], |row| row.get(1)).unwrap_or_default();
+    let result: String = stmt.query_row([], |row| row.get(1)).unwrap();
 
     let update_query = if !result.is_empty() {
         format!(
@@ -85,4 +85,24 @@ pub fn get_game(db_path: &str, game_path: &str) -> Option<Game> {
     });
 
     result.ok()
+}
+
+pub fn get_all_games(db_path: &str) -> Vec<Game> {
+    let conn = games::config::create_conn(db_path).unwrap();
+
+    let mut stmt = conn
+        .prepare(&games::queries::get_games_query())
+        .unwrap();
+
+    let result: Vec<Game> = stmt.query_map([], |row| Ok(Game {
+        id: row.get(0)?,
+        name: row.get(1)?,
+        exe_path: row.get(2)?,
+        img: row.get(3)?,
+    }))
+    .unwrap()
+    .filter_map(|row| row.ok())
+    .collect();
+
+    result
 }

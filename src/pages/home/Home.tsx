@@ -22,21 +22,22 @@ function Home() {
   const handleAddGame = async () => {
     const gameExe = await open({ multiple: false })
     await invoke('add_game', { path: gameExe })
+    fetchGames()
   }
 
   const fetchGames = async () => {
-    const response = await fetch('src/assets/TD/games.json')
-    const games = await response.json()
-    setGames(games as Game[])
+    const response = await invoke('get_games') as Game[]
+    console.log(response)
+    setGames(response)
   }
 
   return (
     <div className="home">
       <div onClick={handleAddGame}>
-        <GameItem key={'add'} name={'Add Game'} imgUrl={''} />
+        <GameItem key={'add'} name={'Add Game'} img={''} />
       </div>
       {games.map((game: Game) => (
-        <GameItem key={game.id} name={game.name} imgUrl={game.imgUrl} />
+        <GameItem key={game.id} name={game.name} img={game.img} />
       ))}
     </div>
   )

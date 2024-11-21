@@ -16,12 +16,9 @@ export class SettingsService {
     const selected = await open({ directory: true, multiple: false })
     const folderAlreadyUsed = await invoke('folder_already_used', { path: selected })
 
-    if (folderAlreadyUsed) {
-      const confirmOverride = await confirm(this.CONFIRM_OVERRIDE_FOLDER)
-      if (!confirmOverride) return folder || ''
-    }
+    const override = folderAlreadyUsed ? await confirm(this.CONFIRM_OVERRIDE_FOLDER) : true
 
-    invoke('set_cloud_location', { path: selected })
+    invoke('set_cloud_location', { path: selected, overrideFolder: override })
 
     return selected as string
   }

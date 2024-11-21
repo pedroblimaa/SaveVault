@@ -1,5 +1,7 @@
 use base64;
 use ico::IconDir;
+use pelite::pe::Pe;
+use pelite::pe64::PeFile;
 use std::ffi::OsStr;
 use std::fs::{self, File};
 use std::path::Path;
@@ -20,8 +22,8 @@ pub fn move_folder_items(from_path: &str, to_path: &str) {
     }
 }
 
-pub fn get_game_info(path: &str) -> Game {
-    let path = Path::new(path);
+pub fn get_game_info(path_str: &str) -> Game {
+    let path = Path::new(path_str);
     let file_name = path.file_name().and_then(OsStr::to_str).unwrap_or("");
     let name = file_name.trim_end_matches(".exe").to_string();
 
@@ -35,6 +37,8 @@ pub fn get_game_info(path: &str) -> Game {
 
     let img64 = format!("data:image/png;base64,{}", base64::encode(&icon));
 
+    &get_exe_icon(path_str.to_string());
+
     Game {
         id: 0, // Assuming id is set elsewhere or auto-incremented
         name,
@@ -47,4 +51,14 @@ pub fn folder_already_used(path: &str) -> bool {
     let games_db_path = Path::new(path).join(GAMES_DB);
 
     games_db_path.exists()
+}
+
+fn get_exe_icon(path: String) {
+    let data = fs::read(path).unwrap();
+    let pe = PeFile::from_bytes(&data).unwrap();
+
+    // TODO - FIX
+
+    let resources = pe.resources().unwrap();
+    println!("Resources: {:#?}", resources.to_string())
 }

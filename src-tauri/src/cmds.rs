@@ -7,8 +7,8 @@ use crate::services::{files_service, game_service};
 use crate::{db, models::game::Game};
 
 #[tauri::command]
-pub fn set_cloud_location(app_handle: AppHandle, path: &str, move_foler: bool) {
-    game_service::set_cloud_location(path, move_foler);
+pub fn set_cloud_location(app_handle: AppHandle, path: &str, override_folder: bool) {
+    game_service::set_cloud_location(path, override_folder);
 
     let mutex_path = Mutex::new(path.to_string());
     app_handle.manage(DbPath { path: mutex_path });
@@ -18,6 +18,7 @@ pub fn set_cloud_location(app_handle: AppHandle, path: &str, move_foler: bool) {
 pub fn get_cloud_location() -> String {
     db::db_manager::select_cloud_location()
 }
+
 
 #[tauri::command]
 pub fn add_game(state: State<'_, DbPath>, path: &str) -> Game {
@@ -32,4 +33,10 @@ pub fn is_cloud_location_empty() -> bool {
 #[tauri::command]
 pub fn folder_already_used(path: &str) -> bool {
     files_service::folder_already_used(path)
+}
+
+
+#[tauri::command]
+pub fn get_games(state: State<'_, DbPath>) -> Vec<Game> {
+    db::db_manager::get_all_games(&state.path.lock().unwrap())
 }

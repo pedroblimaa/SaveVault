@@ -19,3 +19,7 @@ pub fn get_games_table() -> String {
 fn get_id_query() -> String {
     "id INTEGER PRIMARY KEY AUTOINCREMENT".to_string()
 }
+
+pub fn get_games_query() -> String {
+    format!("SELECT * FROM {}", GAMES_DB_TABLE)
+}
