@@ -1,5 +1,6 @@
 export interface Game {
   id: string
-  img: string
+  img_path: string
   name: string
+  loading: boolean
 }

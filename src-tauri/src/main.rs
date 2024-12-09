@@ -22,7 +22,8 @@ fn main() {
             cmds::add_game,
             cmds::is_cloud_location_empty,
             cmds::folder_already_used,
-            cmds::get_games
+            cmds::get_games,
+            cmds::set_game_metadata
         ]);
 
     builder.run(tauri::generate_context!()).unwrap();

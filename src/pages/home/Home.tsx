@@ -20,24 +20,44 @@ function Home() {
   }
 
   const handleAddGame = async () => {
+    // TODO - Refactor this logic
     const gameExe = await open({ multiple: false })
-    await invoke('add_game', { path: gameExe })
-    fetchGames()
+    let game: Game = await invoke('add_game', { path: gameExe })
+    await fetchGames(game)
+
+    await invoke('set_game_metadata', { id: game.id })
+    await fetchGames()
   }
 
-  const fetchGames = async () => {
-    const response = await invoke('get_games') as Game[]
-    console.log(response)
-    setGames(response)
+  const fetchGames = async (loadingGame?: Game) => {
+    const response = (await invoke('get_games')) as Game[]
+
+    // TODO  Move this to a Service layer
+    const isLoading = (game: Game) => game.id === loadingGame?.id
+    const games = response.map((game: Game) => ({ ...game, loading: isLoading(game) }))
+
+
+    setGames(games)
+    // TODO - Give an option for the user to change the game name
+  }
+
+  const getGameInfo = async (game: Game) => {
+    console.log('Getting game info')
+    await invoke('get_game_info', { id: game.id })
   }
 
   return (
     <div className="home">
       <div onClick={handleAddGame}>
-        <GameItem key={'add'} name={'Add Game'} img={''} />
+        <GameItem key={'add'} game={{ id: 'add', name: 'Add Game', loading: false }} />
+      </div>
+      <div onClick={handleAddGame}>
+        <GameItem key={'add'} game={{ id: 'add', name: 'Add Game', loading: true }} />
       </div>
       {games.map((game: Game) => (
-        <GameItem key={game.id} name={game.name} img={game.img} />
+        <div onClick={() => getGameInfo(game)}>
+          <GameItem key={game.id} game={game} />
+        </div>
       ))}
     </div>
   )

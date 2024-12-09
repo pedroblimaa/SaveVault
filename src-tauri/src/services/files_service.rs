@@ -1,10 +1,7 @@
-use base64;
-use ico::IconDir;
-use pelite::pe::Pe;
-use pelite::pe64::PeFile;
-use std::ffi::OsStr;
-use std::fs::{self, File};
 use std::path::Path;
+use std::{fs, io};
+
+use pelite::pe::{Pe, PeFile};
 
 use crate::db::games::config::GAMES_DB;
 use crate::models::game::Game;
@@ -24,26 +21,15 @@ pub fn move_folder_items(from_path: &str, to_path: &str) {
 
 pub fn get_game_info(path_str: &str) -> Game {
     let path = Path::new(path_str);
-    let file_name = path.file_name().and_then(OsStr::to_str).unwrap_or("");
-    let name = file_name.trim_end_matches(".exe").to_string();
+    let name = get_name(path).unwrap();
 
-    // TODO - FIX getting icon, currently is coming empty
-    let icon = File::open(path)
-        .ok()
-        .and_then(|file| IconDir::read(file).ok())
-        .and_then(|icon_dir| icon_dir.entries().get(0).cloned())
-        .map(|icon_image| icon_image.data().to_vec())
-        .unwrap_or_default();
-
-    let img64 = format!("data:image/png;base64,{}", base64::encode(&icon));
-
-    &get_exe_icon(path_str.to_string());
+    println!("Name: {}", name);
 
     Game {
-        id: 0, // Assuming id is set elsewhere or auto-incremented
+        id: 0,
         name,
         exe_path: path.to_str().unwrap().to_string(),
-        img: img64,
+        img_path: "".to_string(),
     }
 }
 
@@ -53,12 +39,33 @@ pub fn folder_already_used(path: &str) -> bool {
     games_db_path.exists()
 }
 
-fn get_exe_icon(path: String) {
-    let data = fs::read(path).unwrap();
+
+// TODO - Add option for when there's no ProductName or Product Description 
+pub fn get_name(path: &Path) -> io::Result<String> {
+    let data = fs::read(path)?;
     let pe = PeFile::from_bytes(&data).unwrap();
-
-    // TODO - FIX
-
     let resources = pe.resources().unwrap();
-    println!("Resources: {:#?}", resources.to_string())
+    let version_info = resources.version_info().unwrap();
+
+    let lang = version_info.translation().first().unwrap();
+    
+    // TODO - Check why Dragon Age is coming with Name in Japanese
+    println!("File Info: {:#?}", version_info.file_info());
+    let name = version_info
+        .value(*lang, "ProductName")
+        .unwrap_or("BootstrapPackagedGame".to_string())
+        .to_string();
+
+    if name == "BootstrapPackagedGame" {
+        return Ok(get_parent_folder_name(path));
+    }
+
+    Ok(name)
+}
+
+fn get_parent_folder_name(path: &Path) -> String {
+    let path = path.parent().unwrap().to_str().unwrap().to_string();
+    let name = path.split("\\").last().unwrap().to_string();
+
+    name
 }
