@@ -32,3 +32,11 @@
     color: var(--text-light-color);
   }
 }
+
+
+.empty-folder-message {
+  color: var(--text-important-color);
+  font-size: 20px;
+  text-align: center; 
+  margin-bottom: 20px;
+}

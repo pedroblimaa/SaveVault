@@ -1,25 +1,20 @@
 import { invoke } from '@tauri-apps/api'
-import { open } from '@tauri-apps/api/dialog'
 import { SyntheticEvent, useEffect, useState } from 'react'
 import { FaFolder } from 'react-icons/fa'
+import { SettingsService } from '../../services/settingsService'
 import './Settings.css'
 
 function Settings() {
   const [folder, setFolder] = useState('')
 
   useEffect(() => {
-    invoke('get_cloud_folder').then((folder) => setFolder(folder as string))
+    invoke('get_cloud_location').then((folder) => setFolder(folder as string))
   }, [])
 
   const selectFolder = async () => {
-    if (folder?.length) {
-      const userConfirmed = await confirm('Changing the cloud folder will move all existing files to the new location.')
-      if (!userConfirmed) return
-    }
+    const selectedFolder = await SettingsService.handleSetFolder(folder)
 
-    const selected = await open({ directory: true, multiple: false })
-    setFolder(selected as string)
-    invoke('set_cloud_folder', { path: selected })
+    setFolder(selectedFolder)
   }
 
   const changeFolderValue = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -29,13 +24,15 @@ function Settings() {
 
   return (
     <>
+      {folder.length === 0 && (
+        <div className="empty-folder-message">Please, select a cloud folder to start using the app</div>
+      )}
       <div className="setting-container">
         <div className="setting-name">Cloud Folder</div>
         <button className="setting-button" onClick={selectFolder}>
           <FaFolder className="setting-icon" />
         </button>
         <input name="Cloud Folder" id="cloud_folder" value={folder} onChange={changeFolderValue} />
-        {/* TODO - Add message to user know it will lose saved data if change folder */}
       </div>
     </>
   )

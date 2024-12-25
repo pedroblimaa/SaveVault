@@ -1,26 +1,30 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
 
-use db::config::CloudFolderDbConnection;
+use db::{cloud_location::config::DbPath, db_manager};
 
-mod folder_manager;
 mod cmds;
 mod db;
+mod models;
+mod services;
 
 fn main() {
-    let conn = Arc::new(Mutex::new(db::config::create_cloud_folder_db().unwrap()));
+    let path = db_manager::select_cloud_location();
+    let path_mutex = Mutex::new(path);
 
     let builder = tauri::Builder::default()
-        .manage(CloudFolderDbConnection { conn })
+        .manage(DbPath { path: path_mutex })
         .invoke_handler(tauri::generate_handler![
-            cmds::greet,
-            cmds::set_cloud_folder,
-            cmds::get_cloud_folder
+            cmds::set_cloud_location,
+            cmds::get_cloud_location,
+            cmds::add_game,
+            cmds::is_cloud_location_empty,
+            cmds::folder_already_used,
+            cmds::get_games,
+            cmds::set_game_metadata
         ]);
 
-    builder
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+    builder.run(tauri::generate_context!()).unwrap();
 }

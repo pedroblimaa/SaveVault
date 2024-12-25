@@ -1,3 +1,29 @@
-h1 {
-  margin: 0px;
+.home {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 15px;
+}
+
+@media (max-width: 1400px) {
+  .home {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .home {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .home {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .home {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

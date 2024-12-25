@@ -4,10 +4,12 @@
   /* Colors */
   --primary-color: #208484;
   --background-color: #2f2f2f;
+  --background-darker-color: #222;
   --background-light-color: #3f3f3f;
   --page-border-color: #4f4f4f;
   --text-color: #bdbdbd;
   --text-light-color: #f6f6f6;
+  --text-important-color: #bd6a6a;
   --app-border-radius: 10px;
 }
 
