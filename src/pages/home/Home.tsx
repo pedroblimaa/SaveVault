@@ -6,7 +6,7 @@ import GameItem from '../../components/game-item/GameItem'
 import { Game } from '../../models/Game'
 import './Home.css'
 import { texts } from '../../utils/config'
-import { GameService } from '../../services/gameService'
+import { GameService } from '../../services/GameService/GameService'
 
 function Home() {
   const navigate = useNavigate()

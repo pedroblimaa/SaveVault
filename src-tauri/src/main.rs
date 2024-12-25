@@ -21,7 +21,7 @@ fn main() {
             cmds::get_cloud_location,
             cmds::add_game,
             cmds::is_cloud_location_empty,
-            cmds::folder_already_used,
+            cmds::check_is_folder_already_used,
             cmds::get_games,
             cmds::set_game_metadata
         ]);

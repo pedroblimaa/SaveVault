@@ -31,7 +31,7 @@ pub fn get_game_info(path_str: &str) -> Game {
     }
 }
 
-pub fn folder_already_used(path: &str) -> bool {
+pub fn is_folder_already_used(path: &str) -> bool {
     let games_db_path = Path::new(path).join(GAMES_DB);
 
     games_db_path.exists()
