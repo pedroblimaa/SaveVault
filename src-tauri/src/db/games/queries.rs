@@ -25,6 +25,5 @@ pub fn get_games_query() -> String {
 }
 
 pub fn update_game_img() -> String {
-    // TODO - Change img_url to img_path, because the image will be downloaded
     format!("UPDATE {} SET img_url = ? WHERE id = ?", GAMES_DB_TABLE)
 }

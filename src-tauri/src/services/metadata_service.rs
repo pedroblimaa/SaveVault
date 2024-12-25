@@ -62,12 +62,10 @@ async fn get_game(name: &str, token: &str) -> GameResponse {
     let body = format!("fields cover,name; search \"{}\";", name);
     let url = format!("{}/games", BASE_URL);
 
-    println!("Body: {}", body);
-
     let res = make_request(&url, &body, token).await;
     let result: Vec<GameResponse> = res.json().await.unwrap();
-    // TODO - Change to get the first that has cover instead
-    let game = result.first().unwrap().clone();
+
+    let game = result.iter().find(|game| game.cover.is_some()).unwrap().clone();
 
     game
 }

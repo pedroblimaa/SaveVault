@@ -23,8 +23,6 @@ pub fn get_game_info(path_str: &str) -> Game {
     let path = Path::new(path_str);
     let name = get_name(path).unwrap();
 
-    println!("Name: {}", name);
-
     Game {
         id: 0,
         name,
@@ -39,18 +37,14 @@ pub fn folder_already_used(path: &str) -> bool {
     games_db_path.exists()
 }
 
-
-// TODO - Add option for when there's no ProductName or Product Description 
 pub fn get_name(path: &Path) -> io::Result<String> {
     let data = fs::read(path)?;
     let pe = PeFile::from_bytes(&data).unwrap();
+
     let resources = pe.resources().unwrap();
     let version_info = resources.version_info().unwrap();
-
     let lang = version_info.translation().first().unwrap();
-    
-    // TODO - Check why Dragon Age is coming with Name in Japanese
-    println!("File Info: {:#?}", version_info.file_info());
+
     let name = version_info
         .value(*lang, "ProductName")
         .unwrap_or("BootstrapPackagedGame".to_string())
@@ -61,6 +55,10 @@ pub fn get_name(path: &Path) -> io::Result<String> {
     }
 
     Ok(name)
+}
+
+pub fn path_exists(path: &str) -> bool {
+    Path::new(path).exists()
 }
 
 fn get_parent_folder_name(path: &Path) -> String {

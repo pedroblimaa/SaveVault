@@ -16,7 +16,15 @@ pub fn set_cloud_location(app_handle: AppHandle, path: &str, override_folder: bo
 
 #[tauri::command]
 pub fn get_cloud_location() -> String {
-    db::db_manager::select_cloud_location()
+    let cloud_location = db::db_manager::select_cloud_location();
+    let path_exists = files_service::path_exists(&cloud_location);
+
+    if !path_exists {
+        db::db_manager::set_cloud_folder("");
+        return "".to_string();
+    }
+
+    cloud_location
 }
 
 #[tauri::command]
@@ -36,20 +44,16 @@ pub fn folder_already_used(path: &str) -> bool {
 
 #[tauri::command]
 pub fn get_games(state: State<'_, DbPath>) -> Vec<Game> {
-    db::db_manager::get_all_games(&state.path.lock().unwrap())
+    db::db_manager::get_all_games(&state.path.lock().unwrap()).unwrap_or([].to_vec())
 }
 
 #[tauri::command]
-pub async fn set_game_metadata(state: State<'_, DbPath>, id: i32) -> Result<(), String> {
-    let game = db::db_manager::get_game_by_id(&state.path.lock().unwrap(), id).unwrap();
-
+pub async fn set_game_metadata(state: State<'_, DbPath>, id: i32, name: String) -> Result<(), String> {
     let token = metadata_service::get_token().await;
-    let game_info = metadata_service::get_game_info(&game.name, &token).await;
+    let game_info = metadata_service::get_game_info(&name, &token).await;
     let url = game_info.url.clone();
 
     db::db_manager::update_game_metadata(&state.path.lock().unwrap(), id, url.unwrap().as_str());
-
-    println!("Game: {:#?}", game);
 
     Ok(())
 }

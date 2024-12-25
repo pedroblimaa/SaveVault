@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import GameItem from '../../components/game-item/GameItem'
 import { Game } from '../../models/Game'
 import './Home.css'
+import { texts } from '../../utils/config'
+import { GameService } from '../../services/gameService'
 
 function Home() {
   const navigate = useNavigate()
@@ -16,34 +18,32 @@ function Home() {
 
   const initApp = async () => {
     const folder = await invoke('get_cloud_location')
-    folder ? fetchGames() : navigate('/settings')
+    folder ? updateGames() : navigate('/settings')
   }
 
   const handleAddGame = async () => {
-    // TODO - Refactor this logic
     const gameExe = await open({ multiple: false })
     let game: Game = await invoke('add_game', { path: gameExe })
-    await fetchGames(game)
+    if (games.find((g) => g.id === game.id)) return
 
-    await invoke('set_game_metadata', { id: game.id })
-    await fetchGames()
+    setNewGame(game)
   }
 
-  const fetchGames = async (loadingGame?: Game) => {
-    const response = (await invoke('get_games')) as Game[]
+  const setNewGame = async (game: Game) => {
+    const newGameName = window.prompt(texts.changeName(), game.name)
+    if (newGameName) {
+      game.name = newGameName
+    }
 
-    // TODO  Move this to a Service layer
-    const isLoading = (game: Game) => game.id === loadingGame?.id
-    const games = response.map((game: Game) => ({ ...game, loading: isLoading(game) }))
+    setGames([...games, { ...game, loading: true }])
 
+    await invoke('set_game_metadata', { id: game.id, name: game.name })
+    await updateGames()
+  }
 
+  const updateGames = async () => {
+    const games = await GameService.fetchGames()
     setGames(games)
-    // TODO - Give an option for the user to change the game name
-  }
-
-  const getGameInfo = async (game: Game) => {
-    console.log('Getting game info')
-    await invoke('get_game_info', { id: game.id })
   }
 
   return (
@@ -51,11 +51,8 @@ function Home() {
       <div onClick={handleAddGame}>
         <GameItem key={'add'} game={{ id: 'add', name: 'Add Game', loading: false }} />
       </div>
-      <div onClick={handleAddGame}>
-        <GameItem key={'add'} game={{ id: 'add', name: 'Add Game', loading: true }} />
-      </div>
       {games.map((game: Game) => (
-        <div onClick={() => getGameInfo(game)}>
+        <div>
           <GameItem key={game.id} game={game} />
         </div>
       ))}
