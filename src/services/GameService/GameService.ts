@@ -1,5 +1,5 @@
-import { invoke } from "@tauri-apps/api"
-import { Game } from "../models/Game"
+import { invoke } from "@tauri-apps/api/core"
+import { Game } from "../../models/Game"
 
 export class GameService {
 

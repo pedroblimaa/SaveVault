@@ -38,8 +38,8 @@ pub fn is_cloud_location_empty() -> bool {
 }
 
 #[tauri::command]
-pub fn folder_already_used(path: &str) -> bool {
-    files_service::folder_already_used(path)
+pub fn check_is_folder_already_used(path: &str) -> bool {
+    files_service::is_folder_already_used(path)
 }
 
 #[tauri::command]

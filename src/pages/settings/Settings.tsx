@@ -1,8 +1,8 @@
-import { invoke } from '@tauri-apps/api'
+import { invoke } from '@tauri-apps/api/core'
 import { SyntheticEvent, useEffect, useState } from 'react'
 import { FaFolder } from 'react-icons/fa'
-import { SettingsService } from '../../services/settingsService'
 import './Settings.css'
+import { SettingsService } from '../../services/SettingsService/SettingsService'
 
 function Settings() {
   const [folder, setFolder] = useState('')
