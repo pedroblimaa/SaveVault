@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core'
-import { texts } from '../../utils/config'
 import { open } from '@tauri-apps/plugin-dialog'
+import { texts } from '../../utils/config'
 
 export class SettingsService {
 

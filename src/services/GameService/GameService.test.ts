@@ -1,17 +1,17 @@
 import { invoke } from "@tauri-apps/api/core"
-import { describe, expect, Mock, test } from "vitest"
+import { describe, expect, Mock, test, vi } from "vitest"
 import { GameService } from "./GameService"
-import { mockGames } from "./GameService.data.mock"
+import { gamesMock } from "./GameService.data.mock"
 
+vi.mock('@tauri-apps/api/core', () => ({
+  invoke: vi.fn(),
+}))
 
 describe('fetchGames', () => {
   test("should fetch games and add loading equals to false", async () => {
     // Given
-    (invoke as Mock).mockResolvedValue(mockGames)
-    const expectedGames = [
-      { ...mockGames[0], loading: false },
-      { ...mockGames[1], loading: false },
-    ]
+    const expectedGames = gamesMock.map(game => ({ ...game, loading: false }));
+    (invoke as Mock).mockImplementation(() => gamesMock)
 
     // When
     const games = await GameService.fetchGames()
