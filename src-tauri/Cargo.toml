@@ -1,3 +1,7 @@
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]	
+
 [package]
 name = "savevault"
 version = "0.1.0"
@@ -8,22 +12,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1", features = [] }
+tauri-build = { version = "2.0.5", features = [] }
 
 [dependencies]
-tauri = { version = "1", features = [
-  "dialog-confirm",
-  "dialog-open",
-  "window-show",
-  "window-start-dragging",
-  "window-unmaximize",
-  "window-unminimize",
-  "window-minimize",
-  "window-maximize",
-  "window-hide",
-  "window-close",
-  "shell-open",
-] }
+tauri = { version = "2.2.3", features = [] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1.0.133"
 rusqlite = { version = "0.32.1", features = ["bundled"] }
@@ -32,6 +24,7 @@ select = "0.6.0"
 chrono = "0.4.38"
 pelite = "0.10.0"
 dotenv = "0.15.0"
+tauri-plugin-dialog = "2.2.0"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

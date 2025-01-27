@@ -1,5 +1,6 @@
-import { invoke, dialog } from '@tauri-apps/api'
+import { invoke } from '@tauri-apps/api/core'
 import { texts } from '../../utils/config'
+import { open } from '@tauri-apps/plugin-dialog'
 
 export class SettingsService {
 
@@ -9,7 +10,7 @@ export class SettingsService {
       if (!confirmMove) return folder
     }
 
-    const selected = await dialog.open({ directory: true, multiple: false })
+    const selected = await open({ directory: true, multiple: false })
     const isFolderAlreadyUsed = await invoke('check_is_folder_already_used', { path: selected })
 
     const override = isFolderAlreadyUsed ? await confirm(texts.confirmOverrideFolder()) : true

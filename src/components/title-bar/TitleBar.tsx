@@ -1,7 +1,9 @@
-import { appWindow } from '@tauri-apps/api/window'
+import { getCurrentWindow  } from '@tauri-apps/api/window'
 import './TitleBar.css'
 import TitleBarButton from './title-bar-button/TitleBarButton'
 import { Link, useLocation } from 'react-router-dom'
+
+const appWindow = getCurrentWindow();
 
 function TitleBar() {
   const location = useLocation()
